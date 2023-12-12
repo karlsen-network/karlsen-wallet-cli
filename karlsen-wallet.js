@@ -2,8 +2,8 @@
 
 const cliProgress = require('cli-progress');
 const { Command } = require('commander');
-const { Wallet, initKaspaFramework, log : walletLogger, Storage, FlowLogger} = require('@kaspa/wallet');
-const { RPC } = require('@kaspa/grpc-node');
+const { Wallet, initKarlsenFramework, log : walletLogger, Storage, FlowLogger} = require('@karlsen/wallet');
+const { RPC } = require('@karlsen/grpc-node');
 const { delay, dpc, debounce, clearDPC } = require('@aspectron/flow-async');
 const Decimal = require('decimal.js');
 const fs = require("fs");
@@ -14,7 +14,7 @@ const qrcode = require('qrcode-terminal');
 const program = new Command();
 const storage = new Storage({logLevel:'debug'});
 const pkg = require('./package.json');
-const log = new FlowLogger('KaspaWallet', {
+const log = new FlowLogger('KarlsenWallet', {
 	display : ['level','time','name'],
 	color: ['level', 'content']
 })
@@ -55,7 +55,7 @@ const Prompt = ({question, muted=false, CB, errorCB=null, attempt=2})=>{
 	askQuestion();
 }
 
-class KaspaWalletCli {
+class KarlsenWalletCli {
 
 	constructor() {
 		this.log = 'info';
@@ -63,7 +63,7 @@ class KaspaWalletCli {
 	}
 
 	async init() {
-		await initKaspaFramework();
+		await initKarlsenFramework();
 	}
 
 	get options() {
@@ -79,7 +79,7 @@ class KaspaWalletCli {
 		const aliases = Object.keys(Wallet.networkAliases);
 		for(let n of aliases)
 			if(options[n]) return Wallet.networkAliases[n];
-		return 'kaspa';
+		return 'karlsen';
 	}
 
 	get rpc() {
@@ -118,7 +118,7 @@ class KaspaWalletCli {
 
 	get rpcIsActive() { return !!this.rpc_; }
 
-	KAS(v, pad = 0) {
+	KLS(v, pad = 0) {
 		let [int,frac] = Decimal(v||0).mul(1e-8).toFixed(8).split('.');
 		int = int.replace(/\B(?=(\d{3})+(?!\d))/g, ",").padStart(pad,' ');
 		frac = frac.replace(/0+$/,'');
@@ -220,7 +220,7 @@ class KaspaWalletCli {
 		const logLevels = ['error','warn','info','verbose','debug', 'utxodebug'];
 		program
 			.version(pkg.version, '--version')
-			.description(`Kaspa Wallet CLI v${pkg.version}`)
+			.description(`Karlsen Wallet CLI v${pkg.version}`)
 			.helpOption('--help','display help for command')
 			.option('--no-sync','disable network sync for all operations')
 			.option('--log <level>',`set log level ${logLevels.join(', ')}`, (level)=>{
@@ -265,7 +265,7 @@ class KaspaWalletCli {
 					await wallet.sync();
 					wallet.on("balance-update", (detail)=>{
 						const { total, available, pending } = detail;
-						console.log(`Balance Update: available:`,`${this.KAS(available)}`.cyan, `pending:`,`${this.KAS(pending)}`.cyan, `total:`,`${this.KAS(total)}`.cyan);
+						console.log(`Balance Update: available:`,`${this.KLS(available)}`.cyan, `pending:`,`${this.KLS(pending)}`.cyan, `total:`,`${this.KLS(total)}`.cyan);
 						console.log(``);
 					})
 
@@ -279,7 +279,7 @@ class KaspaWalletCli {
 								console.log("  transactionId:", `${entry.transactionId} #${entry.index}`.green);
 								console.log("  scriptPublicKey:", entry.scriptPublicKey.scriptPublicKey, "version:", entry.scriptPublicKey.version);
 								console.log("  blockBlueScore:", entry.blockBlueScore.cyan,"isCoinbase:", entry.isCoinbase);
-								console.log("  amount:", this.KAS(entry.amount).cyan,'KAS');
+								console.log("  amount:", this.KLS(entry.amount).cyan,'KLS');
 								console.log(``);
 							})	
 						})
@@ -304,11 +304,11 @@ class KaspaWalletCli {
 
 		const printBalance = (balance)=>{
 			console.log('');
-			console.log(`Wallet balance`+(this.network=='kaspa'?'':` (${Wallet.networkTypes[this.network].name}):`));
+			console.log(`Wallet balance`+(this.network=='karlsen'?'':` (${Wallet.networkTypes[this.network].name}):`));
 			console.log('');
-			console.log(`    Available: ${this.KAS(balance.available,12)} KAS`);
-			console.log(`      Pending: ${this.KAS(balance.pending,12)} KAS`);
-			console.log(`        Total: ${this.KAS(balance.total,12)} KAS`);
+			console.log(`    Available: ${this.KLS(balance.available,12)} KLS`);
+			console.log(`      Pending: ${this.KLS(balance.pending,12)} KLS`);
+			console.log(`        Total: ${this.KLS(balance.total,12)} KLS`);
 			console.log('');
 		}
 
@@ -335,8 +335,8 @@ class KaspaWalletCli {
 			.command('send <address> <amount> [fee]')
 			.option('--no-network-fee','disable automatic inclusion of network/data fee')
 			.description('send funds to an address', {
-				address : 'kaspa network address',
-				amount : 'amount in KAS',
+				address : 'karlsen network address',
+				amount : 'amount in KLS',
 				fee : 'transaction priority fee'
 			})
 			.action(async (address, amount, fee, options) => {
@@ -373,11 +373,11 @@ class KaspaWalletCli {
 						console.log('');
 						console.log("Transaction successful".green);
 						console.log('');
-						console.log(`Wallet balance`+(this.network=='kaspa'?'':` (${Wallet.networkTypes[this.network].name}):`));
+						console.log(`Wallet balance`+(this.network=='karlsen'?'':` (${Wallet.networkTypes[this.network].name}):`));
 						console.log('');
-						console.log(`    Available: ${this.KAS(wallet.balance.available,12)} KAS`);
-						console.log(`      Pending: ${this.KAS(wallet.balance.pending,12)} KAS`);
-						console.log(`        Total: ${this.KAS(wallet.balance.total,12)} KAS`);
+						console.log(`    Available: ${this.KLS(wallet.balance.available,12)} KLS`);
+						console.log(`      Pending: ${this.KLS(wallet.balance.pending,12)} KLS`);
+						console.log(`        Total: ${this.KLS(wallet.balance.total,12)} KLS`);
 					} catch(ex) {
 						//console.log(ex);
 						log.error(ex.toString());
@@ -415,9 +415,9 @@ class KaspaWalletCli {
 							wallet.addressManager.changeAddress.next();
 						console.log("current change address:", wallet.addressManager.changeAddress.current.address.green);
 					}
-					console.log(`balance available:`, `${this.KAS(wallet.balance.available)} KAS`.cyan,
-					` pending:`, `${this.KAS(wallet.balance.pending)} KAS`.cyan, 
-					` total:`, `${this.KAS(wallet.balance.total)} KAS`.cyan);
+					console.log(`balance available:`, `${this.KLS(wallet.balance.available)} KLS`.cyan,
+					` pending:`, `${this.KLS(wallet.balance.pending)} KLS`.cyan, 
+					` total:`, `${this.KLS(wallet.balance.total)} KLS`.cyan);
 					console.log("receive addresses used:",wallet.addressManager.receiveAddress.counter);
 					console.log("change addresses used: ",wallet.addressManager.changeAddress.counter);
 					
@@ -464,12 +464,12 @@ class KaspaWalletCli {
 						UTXOs.sort((a,b) => { return a.blockBlueScore - b.blockBlueScore; });
 						let width = 0;
 						UTXOs.forEach((utxo) => {
-							let kas = `${this.KAS(utxo.amount)}`;
-							if(kas.length > width)
-								width = kas.length;
+							let kls = `${this.KLS(utxo.amount)}`;
+							if(kls.length > width)
+								width = kls.length;
 						})
 						UTXOs.forEach((utxo) => {
-							console.log(` +${this.KAS(utxo.amount, width+1)}`,`KAS`,`txid:`, `${utxo.transactionId} #${utxo.index}`.green,'Blue Score:', utxo.blockBlueScore.cyan);
+							console.log(` +${this.KLS(utxo.amount, width+1)}`,`KLS`,`txid:`, `${utxo.transactionId} #${utxo.index}`.green,'Blue Score:', utxo.blockBlueScore.cyan);
 						})
 					})
 					this.rpc.disconnect();
@@ -576,7 +576,7 @@ class KaspaWalletCli {
 		program
 			.command('qrcode')
 			.description('show wallet address qrcode')
-			.option('--amount <amount>', "amount of KAS included in qr code request")
+			.option('--amount <amount>', "amount of KLS included in qr code request")
 			.action(async(cmd, options) => {
 				const { amount } = cmd;
 				try {
@@ -605,7 +605,7 @@ class KaspaWalletCli {
 
 		program
 			.command('create')
-			.description('create Kaspa wallet')
+			.description('create Karlsen wallet')
 			.option('--password <password>', "Password for wallet, optional if creating unlocked wallet")
 			//.option('-u, --unlocked', "Create unlocked wallet")
 			.option('--force', "Required for unlocked wallet creation")
@@ -960,7 +960,7 @@ class KaspaWalletCli {
 
 
 (async()=>{
-	const cli = new KaspaWalletCli();
+	const cli = new KarlsenWalletCli();
 	await cli.init();
 	await cli.main();
 })();

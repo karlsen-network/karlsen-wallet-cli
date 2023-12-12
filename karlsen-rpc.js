@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 const fs = require('fs');
 const { Command } = require('commander');
-const { RPC } = require('@kaspa/grpc-node');
+const { RPC } = require('@karlsen/grpc-node');
 const pkg = require('./package.json');
 const { fstat } = require('fs');
 //const { colors } = require('@aspectron/colors.ts');
-const { FlowLogger } = require('@kaspa/wallet');
+const { FlowLogger } = require('@karlsen/wallet');
 const NATS = require('nats');
 const jc = NATS.JSONCodec();
 const log = new FlowLogger('RPC');
@@ -19,7 +19,7 @@ const networks = {
 
 const program = new Command();
 
-class KaspaInterface {
+class KarlsenInterface {
 
 	get options() {
 		if(!this.options_) {
@@ -67,7 +67,7 @@ class KaspaInterface {
 
     async main() {
         const proto = this.getProto();
-        const methods = proto.KaspadMessage.type.field
+        const methods = proto.KarlsendMessage.type.field
             .filter(({name})=>/request/i.test(name));
 
         if(process.argv.includes('--verbose'))
@@ -75,7 +75,7 @@ class KaspaInterface {
 
         program
             .version(pkg.version,'--version')
-            .description(`Kaspa gRPC client ${pkg.version}`)
+            .description(`Karlsen gRPC client ${pkg.version}`)
             .usage('[options] <gRPC method> [gRPC method options]')
             .option('--verbose','display arguments and additional info')
             .option('--testnet','use testnet network')
@@ -87,7 +87,7 @@ class KaspaInterface {
             ;
 
         program.addHelpText('after',`
-Please run ${'kaspa-rpc help'.yellow} for addition information and examples.        
+Please run ${'karlsen-rpc help'.yellow} for addition information and examples.        
         `)
 
         program
@@ -122,9 +122,9 @@ Please run ${'kaspa-rpc help'.yellow} for addition information and examples.
             .description('list available gRPC commands and examples')
             .action(async (cmd, options) => {
                 console.log('');
-                console.log(`Usage: kaspa-rpc [options] <gRPC method> [gRPC method options]`);
+                console.log(`Usage: karlsen-rpc [options] <gRPC method> [gRPC method options]`);
                 console.log('');
-                console.log(`Kaspa gRPC client ${pkg.version}`);
+                console.log(`Karlsen gRPC client ${pkg.version}`);
                 console.log('');
                 console.log('Following gRPC commands are available:');
                 console.log('');
@@ -146,18 +146,18 @@ Please note, when supplying JSON formatted arguments from a shell, you must esca
 Examples:
 
     Get additional help information on gRPC method:
-    $ ${`kaspa-rpc addPeer --help`.yellow}
+    $ ${`karlsen-rpc addPeer --help`.yellow}
 
     Get list of UTXOs for an address:
-    $ ${`kaspa-rpc --verbose --testnet getUtxosByAddresses --addresses=[\\"kaspatest:qru9nrs0mjcrfnl7rpxhhe33l3sxzgrc3ypkvkx57u\\"]`.yellow}
+    $ ${`karlsen-rpc --verbose --testnet getUtxosByAddresses --addresses=[\\"karlsentest:qru9nrs0mjcrfnl7rpxhhe33l3sxzgrc3ypkvkx57u\\"]`.yellow}
 
     Monitor DAG Blue Score:
-    $ ${`kaspa-rpc --testnet --subscribe notifyVirtualSelectedParentBlueScoreChanged`.yellow}
+    $ ${`karlsen-rpc --testnet --subscribe notifyVirtualSelectedParentBlueScoreChanged`.yellow}
 
     Get list of UTXOs for an address (load address list from file):
-    $ ${`kaspa-rpc --verbose --testnet getUtxosByAddresses --args=file.js`.yellow}
+    $ ${`karlsen-rpc --verbose --testnet getUtxosByAddresses --args=file.js`.yellow}
 
-    Where file.js can contain: ${`{ addresses : ['kaspatest:qru9nrs0mjcrfnl7rpxhhe33l3sxzgrc3ypkvkx57u'] }`.yellow}
+    Where file.js can contain: ${`{ addresses : ['karlsentest:qru9nrs0mjcrfnl7rpxhhe33l3sxzgrc3ypkvkx57u'] }`.yellow}
     (note that the file uses JavaScript syntax and can contain comments or NodeJS code producing an Object)
 
 `);
@@ -166,7 +166,7 @@ Examples:
 
         program
         .command('proxy-nats')
-        .description('proxy kaspa RPC API via NATS')
+        .description('proxy karlsen RPC API via NATS')
         .option('--nats-server <host>:<port>','use custom NATS server')
         .option('--token <host>:<port>','use token for NATS server auth')
         .action(async (options) => {
@@ -174,7 +174,7 @@ Examples:
             log.info(options);
 //            process.exit(0);
             const natsOptions = {
-                servers : options.natsServer || 'nats.kaspanet.io'
+                servers : options.natsServer || 'nats.karlsencoin.com'
             }
 
             if(options.token)
@@ -214,7 +214,7 @@ Examples:
                             })
 
                         } catch(error) {
-                            this.nats.publish('KASPA.error', jc.encode({ error }));
+                            this.nats.publish('KARLSEN.error', jc.encode({ error }));
                             if(msg.reply) {
                                 msg.respond(jc.encode({error}));
                             }
@@ -369,6 +369,6 @@ Examples:
 }
 
 (async()=>{
-    const ki = new KaspaInterface();
+    const ki = new KarlsenInterface();
     await ki.main();
 })();

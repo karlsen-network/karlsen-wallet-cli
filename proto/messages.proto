@@ -1,9 +1,9 @@
 syntax = "proto3";
 package protowire;
 
-option go_package = "github.com/kaspanet/kaspad/protowire";
+option go_package = "github.com/karlsen-network/karlsend/protowire";
 
-message KaspadMessage {
+message KarlsendMessage {
   oneof payload {
     AddressesMessage addresses = 1;
     BlockMessage block = 2;
@@ -294,7 +294,7 @@ message RejectMessage{
 // RejectMessage end
 
 service P2P {
-  rpc MessageStream (stream KaspadMessage) returns (stream KaspadMessage) {}
+  rpc MessageStream (stream KarlsendMessage) returns (stream KarlsendMessage) {}
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -715,5 +715,5 @@ message GetUTXOsByAddressResponseMessage{
 }
 
 service RPC {
-  rpc MessageStream (stream KaspadMessage) returns (stream KaspadMessage) {}
+  rpc MessageStream (stream KarlsendMessage) returns (stream KarlsendMessage) {}
 }

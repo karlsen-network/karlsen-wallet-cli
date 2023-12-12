@@ -1,37 +1,37 @@
-Kaspa Wallet (CLI)
-==================
+# Karlsen Wallet (CLI)
 
-Kaspa Wallet command-line interface build on top of [Kaspa Wallet](https://github.com/aspectron/kaspa-wallet) framework.
+Karlsen Wallet command-line interface build on top of
+[Karlsen Wallet](https://github.com/karlsen-network/node-karlsen-wallet)
+framework.
 
-This command-line wallet is compatible with [KDX](https://kdx.app)
+This command-line wallet is compatible with
+[Karlsen KDX](https://github.com/karlsen-network/karlsen-kdx)
 
-
-Installing Kaspa Wallet
------------------------
+## Installing Karlsen Wallet
 
 ```
-npm install -g @kaspa/wallet-cli
-kaspa-wallet
+npm install -g @karlsen/wallet-cli
+karlsen-wallet
 ```
 
-Cloning Kaspa Wallet
---------------------
+## Cloning Karlsen Wallet
+
 The following applies to development environment only:
+
 ```
-git clone git@github.com:aspectron/kaspa-wallet-cli
-cd kaspa-wallet-cli
+git clone https://github.com/karlsen-network/node-karlsen-wallet-cli
+cd node-karlsen-wallet-cli
 npm install
-node kaspa-wallet
+node karlsen-wallet
 ```
 
-Running Kaspa Wallet
---------------------
+## Running Karlsen Wallet
 
 ```
-$ node kaspa-wallet
-Usage: kaspa-wallet [options] [command]
+$ node karlsen-wallet
+Usage: karlsen-wallet [options] [command]
 
-Kaspa Wallet CLI v1.1.18
+Karlsen Wallet CLI v1.1.18
 
 Options:
   --version                                output the version number
@@ -56,25 +56,23 @@ Commands:
   transactions                             list wallet transactions
   address                                  show wallet address
   qrcode [options]                         show wallet address qrcode
-  create [options]                         create Kaspa wallet
+  create [options]                         create Karlsen wallet
   permanently-decrypt                      decrypt wallet permanently
   permanently-encrypt                      encrypt wallet permanently
   compound                                 compound transactions by re-sending funds to itself
   help [command]                           display help for command
 ```
 
+## gRPC Interface Utility
 
-
-gRPC Interface Utility
-----------------------
-
-Kaspa Wallet provides a test utility `rpc.js` allowing you to send RPC commands to `kaspad` from the terminal:
+Karlsen Wallet provides a test utility `rpc.js` allowing you to send RPC
+commands to `karlsend` from the terminal:
 
 ```
-$ node kaspa-rpc
-Usage: kaspa-rpc [options] [command]
+$ node karlsen-rpc
+Usage: karlsen-rpc [options] [command]
 
-Kaspa gRPC client
+Karlsen gRPC client
 
 Options:
   --version                                         output the version number
@@ -126,18 +124,17 @@ Commands:
   unban [options]                                   gRPC call unban
   getInfo                                           gRPC call getInfo
   help [command]                                    display help for command
-  ```
-
-RPC Example
------------
-```
-node rpc run -m getTransactionsByAddressesRequest -j '{"addresses":["kaspatest:qr32vna4u8wdamddwaf8853gt52dsauyp59zlcwd5k"], "startingBlockHash":""}'
 ```
 
-Running Kaspad and Mining
--------------------------
+## RPC Example
+
+```
+node rpc run -m getTransactionsByAddressesRequest -j '{"addresses":["karlsentest:qr32vna4u8wdamddwaf8853gt52dsauyp59zlcwd5k"], "startingBlockHash":""}'
+```
+
+## Running Karlsend and Mining
 
 ```sh
-./kaspad --utxoindex --testnet --dnsseed=testnet-dnsseed.daglabs-dev.com
-./kaspaminer --miningaddr=kaspatest:qq0nvlmn07f6edcdfynt4nu4l4r58rkquuvgt635ac --rpcserver=localhost:42210 --testnet
+./karlsend --utxoindex --testnet --dnsseed=testnet-dnsseed.daglabs-dev.com
+./karlsenminer --miningaddr=karlsentest:qq0nvlmn07f6edcdfynt4nu4l4r58rkquuvgt635ac --rpcserver=localhost:42210 --testnet
 ```

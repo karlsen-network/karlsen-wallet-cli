@@ -1,5 +1,5 @@
 
-const { Wallet } = require('@kaspa/wallet');
+const { Wallet } = require('@karlsen/wallet');
 const fs = require("fs");
 //let largeContent = fs.readFileSync("./test_sample.txt")+"";
 
