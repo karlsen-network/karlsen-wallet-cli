@@ -11,7 +11,6 @@ const network = 'kaspatest';
 const rpc = new RPC({
     clientConfig:{
         host:"127.0.0.1:"+Wallet.networkTypes[network].port
-        //host:"127.0.0.1:16210"
     }
 });
 //rpc.client.verbose = true;

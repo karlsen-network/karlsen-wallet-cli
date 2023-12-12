@@ -3,17 +3,16 @@ const {Client} = require('@kaspa/grpc');
 
 
 const PORTS = {
-    mainnet : 16110,
-    testnet : 16210,
-    simnet : 16510,
-    devnet : 16610
+    mainnet : 42110,
+    testnet : 42210,
+    simnet : 42510,
+    devnet : 42610
 }
 const NETWORK = 'devnet';
 
 const client = new Client({
     clientConfig:{
         host:"127.0.0.1:"+PORTS[NETWORK]
-//        host:"127.0.0.1:16110"
     }
 });
 client.connect();
