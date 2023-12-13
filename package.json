@@ -34,13 +34,10 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.9",
-    "@types/request": "^2.48.5",
-    "ts-node": "^9.0.0",
-    "typescript": "*"
+    "@types/request": "^2.48.5"
   },
   "files": [
     "karlsen-wallet.js",
-    "README.md",
-    "tsconfig.json"
+    "README.md"
   ]
 }
