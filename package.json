@@ -8,8 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "karlsen-wallet": "karlsen-wallet.js",
-    "karlsen-rpc": "karlsen-rpc.js"
+    "karlsen-wallet": "karlsen-wallet.js"
   },
   "authors": [
     {
@@ -40,7 +39,6 @@
     "typescript": "*"
   },
   "files": [
-    "karlsen-rpc.js",
     "karlsen-wallet.js",
     "README.md",
     "tsconfig.json"
