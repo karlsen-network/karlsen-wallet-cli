@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const { Wallet, initKaspaFramework } = require('@kaspa/wallet');
-const { RPC } = require('@kaspa/grpc-node');
+const { Wallet, initKarlsenFramework } = require('@karlsen/wallet');
+const { RPC } = require('@karlsen/grpc-node');
 
-const network = 'kaspadev';
+const network = 'karlsendev';
 const rpc = new RPC({
     clientConfig:{
         host:"127.0.0.1:"+Wallet.networkTypes[network].port
@@ -16,7 +16,7 @@ let dump = (label, text, deco1="-", deco2="=")=>{
 
 const run = async ()=>{
 
-    await initKaspaFramework();
+    await initKarlsenFramework();
 
     //let wallet = Wallet.fromMnemonic("live excuse stone acquire remain later core enjoy visual advice body play");
     let wallet = Wallet.fromMnemonic("wasp involve attitude matter power weekend two income nephew super way focus",{network, rpc});
@@ -54,7 +54,7 @@ const run = async ()=>{
 
     /*
     let response = await wallet.submitTransaction({
-        toAddr: "kaspatest:qrhefqj5c80m59d9cdx4ssxw96vguvn9fgy6yc0qtd",
+        toAddr: "karlsentest:qrhefqj5c80m59d9cdx4ssxw96vguvn9fgy6yc0qtd",
         amount: 1000,
         fee: 400
     }, true).catch(async (error)=>{
